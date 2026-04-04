@@ -183,7 +183,7 @@
     <h2 class="reveal">Contact Me</h2>
 
     <div class="biggerfont reveal">
-        <i><a href="mailto:owenleemail@proton.me" style="color: #1a1a1a;">owenleemail@proton.me</a></i>
+        <i><a href="mailto:owen@owenlee.xyz" style="color: #1a1a1a;">owen@owenlee.xyz</a></i>
     </div>
 
     <div class="projects-link reveal">
@@ -226,12 +226,11 @@
         logoutBtn.addEventListener('click', () => {
             signOut(auth);
         });
-
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 loginBtn.style.display = 'none';
                 userInfo.style.display = 'flex';
-                userName.innerText = user.displayName.split(' ')[0]; 
+                userName.innerText = user.displayName.split(' ')[0];
                 userPic.src = user.photoURL;
             } else {
                 loginBtn.style.display = 'block';
