@@ -12,7 +12,7 @@
         body {
             font-family: 'Lilita One', sans-serif;
             margin: 0;
-            padding: 120px 20px 80px 20px; /* Increased top padding for the fixed nav */
+            padding: 120px 20px 80px 20px;
             background-color: #1a1a1a;
             background-image: radial-gradient(#333 1px, transparent 1px);
             background-size: 40px 40px;
@@ -25,7 +25,6 @@
             text-align: center;
         }
 
-        /* Auth Navigation Bar */
         .nav-bar {
             position: fixed;
             top: 0;
@@ -57,7 +56,7 @@
         }
 
         .user-info {
-            display: none; /* Hidden by default */
+            display: none;
             align-items: center;
             gap: 10px;
             background: rgba(0,0,0,0.5);
@@ -219,24 +218,21 @@
         const userName = document.getElementById('userName');
         const userPic = document.getElementById('userPic');
 
-        // Login Logic
         loginBtn.addEventListener('click', () => {
             signInWithPopup(auth, provider)
                 .then((result) => console.log("Logged in!"))
                 .catch((error) => console.error(error));
         });
 
-        // Logout Logic
         logoutBtn.addEventListener('click', () => {
             signOut(auth);
         });
 
-        // Listen for Auth State Changes
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 loginBtn.style.display = 'none';
                 userInfo.style.display = 'flex';
-                userName.innerText = user.displayName.split(' ')[0]; // Show first name
+                userName.innerText = user.displayName.split(' ')[0];
                 userPic.src = user.photoURL;
             } else {
                 loginBtn.style.display = 'block';
