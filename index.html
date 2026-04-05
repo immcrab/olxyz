@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" href="resources\Images\favicon.png">
+    <link rel="icon" type="image/png" href="resources/Images/favicon.png">
     <style>
         body {
             font-family: 'Lilita One', sans-serif;
@@ -32,7 +32,8 @@
             padding: 20px;
             z-index: 1000;
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            align-items: flex-end;
             gap: 15px;
         }
 
@@ -189,6 +190,8 @@
                 position: static;
                 margin-bottom: 20px;
                 justify-content: center;
+                flex-direction: row;
+                align-items: center;
             }
             .owenimg1, .owenimg2, .owenimg3 {
                 margin-left: 0;
@@ -210,10 +213,11 @@
 </head>
 <body>
 
-    <h5 class="reveal" style="font-size: 1.3rem; color: #ffffff; margin-bottom: -10px;">Version 1.0.8</h5>
+    <h5 class="reveal" style="font-size: 1.3rem; color: #ffffff; margin-bottom: -10px;">Version 1.1.1</h5>
 
     <div class="nav-bar">
         <button id="loginBtn" class="auth-btn">LOGIN / SIGN UP</button>
+        <button id="shareBtn" class="auth-btn">Share with Friends</button>
         <div id="userInfo" class="user-info">
             <img id="userPic" src="" alt="User">
             <span id="userName" style="color: #c5ffea;"></span>
@@ -225,9 +229,9 @@
 
     <h2 class="reveal">About Me</h2> 
 
-    <img class="owenimg1 reveal" src="resources\Images\Owen/owen1.png" alt="Owen">
-    <img class="owenimg2 reveal" src="resources\Images\Owen/owen2.jpg" alt="Owen">
-    <img class="owenimg3 reveal" src="resources\Images\Owen/owen3.jpg" alt="Owen">
+    <img class="owenimg1 reveal" src="resources/Images/Owen/owen1.png" alt="Owen">
+    <img class="owenimg2 reveal" src="resources/Images/Owen/owen2.jpg" alt="Owen">
+    <img class="owenimg3 reveal" src="resources/Images/Owen/owen3.jpg" alt="Owen">
 
     <div class="introduction reveal">
         <p>My name is <span style="color:#c5ffea">Owen</span>. I am a 11-year-old <a href="https://wikipedia.org/wiki/HTML" class="highlight">HTML developer</a>. I like to build cool websites (kinda like this). Porkbun is my personal favorite domain registrar.</p>
@@ -285,6 +289,7 @@
         logoutBtn.addEventListener('click', () => {
             signOut(auth);
         });
+
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 loginBtn.style.display = 'none';
@@ -296,9 +301,31 @@
                 userInfo.style.display = 'none';
             }
         });
-    </script>
 
-    <script>
+        // Share functionality
+        const shareBtn = document.getElementById('shareBtn');
+        shareBtn.addEventListener('click', async () => {
+            if (navigator.share) {
+                try {
+                    await navigator.share({
+                        title: 'OwenLee.XYZ',
+                        text: 'Check out Owen\'s awesome website!',
+                        url: window.location.href
+                    });
+                } catch (err) {
+                    console.log('Share cancelled or failed');
+                }
+            } else {
+                try {
+                    await navigator.clipboard.writeText(window.location.href);
+                    alert('Link copied to clipboard! Share it with your friends!');
+                } catch (err) {
+                    alert('Failed to copy link. Please copy manually: ' + window.location.href);
+                }
+            }
+        });
+
+        // Reveal Animations
         const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
