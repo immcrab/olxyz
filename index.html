@@ -11,7 +11,9 @@
     <meta property="og:url" content="https://owenlee.xyz" />
     <meta name="theme-color" content="#c5ffea">
     <meta name="twitter:card" content="summary_large_image">
-
+    <meta name="description" content="OwenLee, Owen, Lee, owenlee.xyz, owenlee.xyz, owenlee, owen lee, owen's website, owen's projects, owen's portfolio, owen's contact, owen's about me">
+    <meta name="keywords" content="OwenLee, Owen, Lee, owenlee.xyz, owenlee.xyz, owenlee, owen lee, owen's website, owen's projects, owen's portfolio, owen's contact, owen's about me">
+    <meta name="robots" content="index, follow">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
@@ -226,6 +228,7 @@
     <div class="nav-bar">
         <button id="loginBtn" class="auth-btn">LOGIN / SIGN UP</button>
         <button id="shareBtn" class="auth-btn">Share with Friends</button>
+        <button id="devlogBtn" class="auth-btn">📝 Dev Logs</button>
         <div id="userInfo" class="user-info">
             <img id="userPic" src="" alt="User">
             <span id="userName" style="color: #c5ffea;"></span>
@@ -343,6 +346,15 @@
         }, { threshold: 0.1 });
 
         document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+
+        // Initialize Devlog System
+        const devlogScript = document.createElement('script');
+        devlogScript.src = 'devlog/devlog.js';
+        devlogScript.onload = () => {
+            DevlogSystem.init();
+            DevlogSystem.addDevlogButtonToNav();
+        };
+        document.head.appendChild(devlogScript);
     </script>
 </body>
 </html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Devlog Admin | OwenLee.XYZ</title>
+    
+    <meta property="og:title" content="Devlog Admin - OwenLee.XYZ" />
+    <meta property="og:description" content="Create new devlogs for OwenLee.XYZ" />
+    <meta name="theme-color" content="#c5ffea">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../resources/Images/favicon.png">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Lilita One', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #1a1a1a;
+            background-image: radial-gradient(#333 1px, transparent 1px);
+            background-size: 40px 40px;
+            min-height: 100vh;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        
+        h1 {
+            font-size: clamp(30px, 6vw, 60px);
+            margin: 20px 0;
+            text-transform: uppercase;
+            text-shadow: 4px 4px 0px #c5ffea;
+            -webkit-text-stroke: 1px #c5ffea;
+            color: transparent;
+            letter-spacing: 2px;
+        }
+        
+        .admin-container {
+            background: #252525;
+            border: 3px solid #c5ffea;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            color: #c5ffea;
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #444;
+            border-radius: 10px;
+            background: #1a1a1a;
+            color: #fff;
+            font-family: 'Lilita One', sans-serif;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #c5ffea;
+            box-shadow: 0 0 15px rgba(197,255,234,0.3);
+        }
+        
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .btn {
+            font-family: 'Lilita One', sans-serif;
+            background: #c5ffea;
+            color: #1a1a1a;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.2s ease;
+            box-shadow: 4px 4px 0px #333;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0px #333;
+            background: #ffffff;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .btn-secondary {
+            background: #444;
+            color: #fff;
+            margin-top: 10px;
+        }
+        
+        .btn-secondary:hover {
+            background: #555;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .message.success {
+            background: rgba(197, 255, 234, 0.2);
+            border: 2px solid #c5ffea;
+            color: #c5ffea;
+        }
+        
+        .message.error {
+            background: rgba(255, 100, 100, 0.2);
+            border: 2px solid #ff6464;
+            color: #ff6464;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid #c5ffea;
+            margin-bottom: 20px;
+        }
+        
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        
+        .user-info span {
+            color: #c5ffea;
+        }
+        
+        .nav-back {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+        }
+        
+        .nav-back a {
+            color: #c5ffea;
+            text-decoration: none;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-back a:hover {
+            transform: scale(1.1);
+            text-shadow: 0 0 10px #c5ffea;
+        }
+        
+        .existing-devlogs {
+            margin-top: 30px;
+            border-top: 2px solid #333;
+            padding-top: 20px;
+        }
+        
+        .existing-devlogs h2 {
+            color: #c5ffea;
+            font-size: 1.5rem;
+        }
+        
+        .devlog-entry {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .devlog-entry h3 {
+            margin: 0 0 5px 0;
+            color: #c5ffea;
+        }
+        
+        .devlog-entry p {
+            margin: 0 0 5px 0;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+        
+        .devlog-entry small {
+            color: #666;
+        }
+        
+        .delete-btn {
+            background: #ff6464;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Lilita One', sans-serif;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+        
+        .delete-btn:hover {
+            background: #ff4444;
+        }
+        
+        .access-denied {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .access-denied h2 {
+            color: #ff6464;
+        }
+        
+        .access-denied p {
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-back">
+        <a href="../index.html">← Back to Home</a>
+    </div>
+    
+    <h1>📝 Devlog Admin</h1>
+    
+    <div class="admin-container" id="adminContainer">
+        <div id="authSection">
+            <p style="text-align: center; color: #ccc;">Please sign in to access the devlog admin panel.</p>
+            <button id="loginBtn" class="btn">Sign In with Google</button>
+        </div>
+        
+        <div id="adminSection" style="display: none;">
+            <div class="user-info" id="userInfo">
+                <img id="userPic" src="" alt="User">
+                <span id="userEmail"></span>
+            </div>
+            
+            <div id="message"></div>
+            
+            <form id="devlogForm">
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" placeholder="Enter devlog title..." required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" placeholder="Enter devlog description..." required></textarea>
+                </div>
+                
+                <button type="submit" class="btn">Publish Devlog</button>
+            </form>
+            
+            <div class="existing-devlogs">
+                <h2>Existing Devlogs</h2>
+                <div id="devlogList"></div>
+            </div>
+            
+            <button id="logoutBtn" class="btn btn-secondary">Sign Out</button>
+        </div>
+        
+        <div id="accessDenied" class="access-denied" style="display: none;">
+            <h2>🚫 Access Denied</h2>
+            <p>You do not have permission to access this page.</p>
+            <p>Only the following emails are allowed:</p>
+            <ul style="color: #c5ffea; text-align: left; display: inline-block;">
+                <li>imcrabfr@gmail.com</li>
+                <li>olee018@stpaul.k12.mn.us</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js';
+        import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js';
+        
+        const DEVLOG_ADMIN_EMAILS = ['imcrabfr@gmail.com', 'olee018@stpaul.k12.mn.us'];
+        const DEVLOG_STORAGE_KEY = 'owenlee_devlogs';
+        const REDIRECT_URL = 'https://404.owenlee.xyz';
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyB4ajU8m2BwQuURWAEg77KWECpa1i7VM6c",
+            authDomain: "owenleexyz-api.firebaseapp.com",
+            databaseURL: "https://owenleexyz-api-default-rtdb.firebaseio.com",
+            projectId: "owenleexyz-api",
+            storageBucket: "owenleexyz-api.firebasestorage.app",
+            messagingSenderId: "616093813686",
+            appId: "1:616093813686:web:b244e945a87143c09ccf17",
+            measurementId: "G-P12WVBCSLB"
+        };
+        
+        // Initialize Firebase
+        let auth;
+        try {
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+        } catch (e) {
+            console.log('Firebase already initialized or error:', e);
+        }
+        
+        const provider = new GoogleAuthProvider();
+        
+        // Load devlogs
+        function loadDevlogs() {
+            const stored = localStorage.getItem(DEVLOG_STORAGE_KEY);
+            return stored ? JSON.parse(stored) : [];
+        }
+        
+        // Save devlogs
+        function saveDevlogs(devlogs) {
+            localStorage.setItem(DEVLOG_STORAGE_KEY, JSON.stringify(devlogs));
+        }
+        
+        // Check if email is admin
+        function isAdminEmail(email) {
+            return DEVLOG_ADMIN_EMAILS.includes(email.toLowerCase());
+        }
+        
+        // Show message
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.className = `message ${type}`;
+            msg.textContent = text;
+            setTimeout(() => msg.textContent = '', 5000);
+        }
+        
+        // Render devlog list
+        function renderDevlogList() {
+            const devlogs = loadDevlogs();
+            const list = document.getElementById('devlogList');
+            
+            if (devlogs.length === 0) {
+                list.innerHTML = '<p style="color: #666;">No devlogs yet.</p>';
+                return;
+            }
+            
+            list.innerHTML = devlogs.map(d => `
+                <div class="devlog-entry">
+                    <h3>${escapeHtml(d.title)}</h3>
+                    <p>${escapeHtml(d.description)}</p>
+                    <small>${formatDate(d.date)}</small>
+                    <br>
+                    <button class="delete-btn" onclick="deleteDevlog('${d.id}')">Delete</button>
+                </div>
+            `).join('');
+        }
+        
+        // Delete devlog
+        window.deleteDevlog = function(id) {
+            if (!confirm('Are you sure you want to delete this devlog?')) return;
+            
+            let devlogs = loadDevlogs();
+            devlogs = devlogs.filter(d => d.id !== id);
+            saveDevlogs(devlogs);
+            renderDevlogList();
+            showMessage('Devlog deleted!', 'success');
+        };
+        
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Format date
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'short', 
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        // Handle auth state
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const email = user.email;
+                document.getElementById('userPic').src = user.photoURL || '';
+                document.getElementById('userEmail').textContent = email;
+                
+                if (isAdminEmail(email)) {
+                    document.getElementById('authSection').style.display = 'none';
+                    document.getElementById('adminSection').style.display = 'block';
+                    document.getElementById('accessDenied').style.display = 'none';
+                    renderDevlogList();
+                } else {
+                    // Redirect non-admin users
+                    window.location.href = REDIRECT_URL;
+                }
+            } else {
+                document.getElementById('authSection').style.display = 'block';
+                document.getElementById('adminSection').style.display = 'none';
+                document.getElementById('accessDenied').style.display = 'none';
+            }
+        });
+        
+        // Login handler
+        document.getElementById('loginBtn').addEventListener('click', () => {
+            signInWithPopup(auth, provider).catch(error => {
+                showMessage('Error signing in: ' + error.message, 'error');
+            });
+        });
+        
+        // Logout handler
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+            signOut(auth);
+        });
+        
+        // Form submit handler
+        document.getElementById('devlogForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('title').value.trim();
+            const description = document.getElementById('description').value.trim();
+            
+            if (!title || !description) {
+                showMessage('Please fill in all fields', 'error');
+                return;
+            }
+            
+            const devlogs = loadDevlogs();
+            const newDevlog = {
+                id: Date.now().toString(),
+                title,
+                description,
+                date: new Date().toISOString()
+            };
+            
+            devlogs.unshift(newDevlog); // Add to beginning
+            saveDevlogs(devlogs);
+            
+            // Clear viewed status so all users see the new devlog
+            localStorage.removeItem('owenlee_devlogs_viewed');
+            
+            document.getElementById('title').value = '';
+            document.getElementById('description').value = '';
+            
+            renderDevlogList();
+            showMessage('Devlog published! Users will see it on their next page visit.', 'success');
+        });
+    </script>
+</body>
+</html>
